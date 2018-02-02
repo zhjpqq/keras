@@ -14,7 +14,7 @@ import keras
 from keras.layers import Dense, Conv2D, BatchNormalization, Activation
 from keras.layers import AveragePooling2D, Input, Flatten
 from keras.optimizers import Adam
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler
+from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TensorBoard
 from keras.callbacks import ReduceLROnPlateau
 from keras.preprocessing.image import ImageDataGenerator
 from keras.regularizers import l2
@@ -359,7 +359,12 @@ lr_reducer = ReduceLROnPlateau(factor=np.sqrt(0.1),
                                patience=5,
                                min_lr=0.5e-6)
 
-callbacks = [checkpoint, lr_reducer, lr_scheduler]
+tensorboard = TensorBoard(log_dir='E:\\keras\\alldatasets\\cifar10_resnet_result',
+                          write_images=False,
+                          write_graph=True,
+                          write_grads=False)
+
+callbacks = [checkpoint, lr_reducer, lr_scheduler, tensorboard]
 
 # Run training, with or without data augmentation.
 if not data_augmentation:
