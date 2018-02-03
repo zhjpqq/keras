@@ -8,7 +8,7 @@ from ..utils.data_utils import get_file
 import numpy as np
 
 
-def load_data(path='mnist.npz'):
+def load_data(path='E:\\keras\\alldatasets\\mnist.npz'):
     """Loads the MNIST dataset.
 
     # Arguments

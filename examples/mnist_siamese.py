@@ -22,6 +22,7 @@ from keras.models import Model
 from keras.layers import Input, Flatten, Dense, Dropout, Lambda
 from keras.optimizers import RMSprop
 from keras import backend as K
+from keras.callbacks import TensorBoard
 
 num_classes = 10
 epochs = 20
@@ -123,13 +124,20 @@ distance = Lambda(euclidean_distance,
 
 model = Model([input_a, input_b], distance)
 
+# callbacks
+tensorboard = TensorBoard(log_dir='E:\\keras\\alldatasets\\mnist_siamese',
+                          write_graph=True,
+                          write_images=False,
+                          write_grads=False)
+
 # train
 rms = RMSprop()
 model.compile(loss=contrastive_loss, optimizer=rms, metrics=[accuracy])
 model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y,
           batch_size=128,
           epochs=epochs,
-          validation_data=([te_pairs[:, 0], te_pairs[:, 1]], te_y))
+          validation_data=([te_pairs[:, 0], te_pairs[:, 1]], te_y),
+          callbacks=[tensorboard])
 
 # compute final accuracy on training and test sets
 y_pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
